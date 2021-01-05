@@ -29,18 +29,19 @@ public class MovieCatalogResource {
     @GetMapping("/{username}")
     public List<CatalogsItem> getCatalog(@PathVariable("username") String username){
 
-//    Using Resttemplete Synchoronos
-       UserRating userRating=restTemplate.getForObject("http://localhost:8072/ratingdata/user/"+username, UserRating.class);
+//    Using Resttemplete Sync
+//       UserRating userRating=restTemplate.getForObject("http://localhost:8072/ratingdata/user/"+username, UserRating.class);
+        UserRating userRating=restTemplate.getForObject("http://rating-data-service/ratingdata/user/"+username, UserRating.class);
 
        return userRating.getRatingList().stream().map(rating -> {
-            Movie movie=restTemplate.getForObject("http://localhost:8071/movies/" + rating.getMovieId(), Movie.class);
+            Movie movie=restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
 
             return new CatalogsItem(movie.getName(),"desc",rating.getRating());
         }).collect(Collectors.toList());
 
     }
 }
-/*Using Web Client
+/*Using Web Client Async
            Movie movie=webClientBuilder.build()
                    .get()
                    .uri("http://localhost:8071/movies/" + rating.getMovieId())
