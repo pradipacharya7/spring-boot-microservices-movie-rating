@@ -5,6 +5,7 @@ import com.practice.moviecatlogservice.models.Movie;
 import com.practice.moviecatlogservice.models.Rating;
 import com.practice.moviecatlogservice.models.UserRating;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,10 @@ public class MovieCatalogResource {
     RestTemplate restTemplate;
     @Autowired
     WebClient.Builder webClientBuilder;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
+    
     @GetMapping("/{username}")
     public List<CatalogsItem> getCatalog(@PathVariable("username") String username){
 
